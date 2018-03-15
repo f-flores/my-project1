@@ -1,0 +1,11 @@
+/* stylesheet */
+* {
+  box-sizing: border-box; }
+
+html body {
+  background-color: lightcyan;
+  margin: 5px 20px;
+  height: 100%;
+  width: 99%; }
+  html body #send-chat {
+    width: 60%; }

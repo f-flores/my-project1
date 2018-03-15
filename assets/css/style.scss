@@ -1,0 +1,20 @@
+/* stylesheet */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+
+  body {
+    background-color: lightcyan;
+    // background: $giphy-color-3 url("../images/rainbow-1418706_960_720.png") no-repeat;
+    margin: 5px 20px;
+    height: 100%;
+    width: 99%;
+
+    #send-chat {
+      width: 60%;
+    }
+  }
+}
