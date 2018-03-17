@@ -9,9 +9,21 @@ html {
   body {
     background-color: lightcyan;
     // background: $giphy-color-3 url("../images/rainbow-1418706_960_720.png") no-repeat;
-    margin: 5px 20px;
+    margin: 5px 30px;
     height: 100%;
     width: 99%;
+/*     #topic-form {
+      display: inline-block;
+    } */
+    .custom-form-input input[type=text] {
+      width: 40% !important;
+      padding: 0px 10px;
+      margin: 8px 8px;
+    }
+
+    .ticker-paragraph {
+      line-height: normal;
+    }
 
     #send-chat {
       width: 60%;
