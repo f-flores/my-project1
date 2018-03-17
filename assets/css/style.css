@@ -9,3 +9,5 @@ html body {
   width: 99%; }
   html body #send-chat {
     width: 60%; }
+  html body #my-watch-table {
+    font-size: 60%; }

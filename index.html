@@ -37,6 +37,43 @@
           </form>
       </div>
   </div>
+
+  <div id="watchers-table">
+    <table id="my-watch-table" class="table table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Symbol</th>
+          <th scope="col">Last Price</th>
+          <th scope="col">Change</th>
+          <th scope="col">% Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="watch-1">
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td colspan="2">Larry the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+    <form id="wlist-form" class="form-inline">
+      <label for="wlist-input"></label>
+      <input id="wlist-input" class="form-control mr-sm-2" type="text" placeholder="Watch..." aria-label="wlist-input">
+      <button id="wlist-button" class="btn btn-outline-warning my-2 my-sm-0 mr-2" type="submit">Add to Watch List</button>
+    </form>
+  </div>
   
     <!-- Firebase Reference -->
     <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>

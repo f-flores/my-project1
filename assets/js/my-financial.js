@@ -3,10 +3,13 @@ const AlphaAPIKEY = "51J2DL5ZC7RQBE6J";
 const AlphaEndPoint = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=";
 const AlphaBatch = "https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&symbols=";
 const AlphaBatchSuffix = "&apikey=" + AlphaAPIKEY;
+const AlphaTS = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=";
+const AlphaTSSuffix= AlphaBatchSuffix;
 
 var alphaQueryURL;
 
 // https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&outputsize=full&apikey=demo
+// https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=EPD&apikey=51J2DL5ZC7RQBE6J
 
 // renders stock info
 function renderStockInfo(data) {
@@ -53,6 +56,31 @@ function buildBatchURL(sym) {
   });
 }
 
+//---------------------------------------------------------------------
+// builds watchlist
+//
+function buildWlist(sym) {
+  var result,
+      queryURL;
+
+  console.log("in buildWlist()");
+  // get time-last-refreshed
+  queryURL = AlphaTS + sym + AlphaTSSuffix;
+  console.log("batch url: " + queryURL);
+
+  $.ajax({
+    "method": "GET",
+    "url": queryURL
+  }).then((response) => {
+    // console.log(response);
+    result = response;
+    console.log(result);
+    console.log(result["Stock Quotes"][0]);
+    renderStockInfo(result["Stock Quotes"][0]);
+  });
+}
+
+
 function buildQueryURL() {
   var result;
 
@@ -91,5 +119,17 @@ $("#stock-ticker").on("click", (event) => {
 
   event.preventDefault();
   buildBatchURL(stockSymbol);
+
+});
+
+$("#wlist-button").on("click", (event) => {
+  var stockSymbol = $("#wlist-input").val().
+                                      trim();
+
+  console.log("in wlist-button() ");
+  $("#financial-text").empty();
+
+  event.preventDefault();
+  // buildWlist(stockSymbol);
 
 });
