@@ -90,12 +90,13 @@ $(document).ready(() => {
       tCellChange.html(numeral(changeInPrice).format("+0,0.00"));
       tCellPct.html(numeral(pctCh).format("0.00%"));
       tRow.attr("stock-sym", sym).
-          attr("id", sym);
+           attr("id", sym);
       tRow.append(tCellSym, tCellPrice, tCellChange, tCellPct);
     }, (errorObject) => {
       console.log("Errors handled: " + errorObject.code);
     });
-
+    // console.log("tHeader: " + JSON.stringify(tHeader));
+    $("#watch-table-header").show();
     $("#watch-table").append(tRow);
   }
 
@@ -148,7 +149,7 @@ $(document).ready(() => {
       change,
       pctChange
     }, (errorObject) => {
-      console.log("Errors handled: " + errorObject.code);
+      console.log("Errors handled: " + JSON.stringify(errorObject));
     });
   }
 
@@ -296,24 +297,28 @@ $(document).ready(() => {
   function addToWatchList() {
     var stockSymbol = $(this).attr("stock-id");
 
-      console.log("in addToWatchList() ");
-      console.log("stock symbol: " + stockSymbol);
-      // $("#financial-text").empty();
-      // get current price of stock symbol
-      buildBatchURL(stockSymbol, "watch");
+    // empty out stock-ticker content
+    $("#stock-ticker-content").empty();
 
-      // get yesterday's close price of stock symbol
-      buildTimeSeriesURL(stockSymbol);
+    console.log("in addToWatchList() ");
+    console.log("stock symbol: " + stockSymbol);
+    // $("#financial-text").empty();
+    // get current price of stock symbol
+    buildBatchURL(stockSymbol, "watch");
 
-      // add row to watchListTable
-      renderWatchTable(stockSymbol);
+    // get yesterday's close price of stock symbol
+    buildTimeSeriesURL(stockSymbol);
 
-      // event.preventDefault();
-      // buildWatchlist(stockSymbol);
+    // add row to watchListTable
+    renderWatchTable(stockSymbol);
+
+    // event.preventDefault();
+    // buildWatchlist(stockSymbol);
 
   }
 
   initdb();
+  $("#watch-table-header").hide();
 
   // displays the selected topic's giphy images
   $(document).on("click", ".watch-button", addToWatchList);
