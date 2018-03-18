@@ -7,9 +7,9 @@
 const AlphaAPIKEY = "51J2DL5ZC7RQBE6J";
 // const AlphaEndPoint = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=";
 const AlphaBatch = "https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&symbols=";
-const AlphaBatchSuffix = "&apikey=" + AlphaAPIKEY;
-// const AlphaTS = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=";
-// const AlphaTSSuffix = AlphaBatchSuffix;
+const AlphaSuffix = "&apikey=" + AlphaAPIKEY;
+const AlphaTS = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=";
+const AlphaTSSuffix = AlphaSuffix;
 
 // https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&outputsize=full&apikey=demo
 // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=EPD&apikey=51J2DL5ZC7RQBE6J
@@ -28,6 +28,7 @@ const AlphaBatchSuffix = "&apikey=" + AlphaAPIKEY;
   var currentWatchRow = {
     "symbol": "",
     "currentPrice": 0,
+    "previousPrice": 0,
     "change": 0,
     "pctChange": 0
   };
@@ -65,26 +66,34 @@ $(document).ready(() => {
     var tRow = $("<tr>"),
         tCellSym = $("<td>"),
         tCellPrice = $("<td>"),
+        tCellChange = $("<td>"),
+        tCellPct = $("<td>"),
         dbPath = "watchlist/" + sym,
-        cprice,
+        price, changeInPrice, pctCh,
         dbVal;
 
     // ref
-    database.ref(dbPath).once("value").
-      then((snapshot) => {
-        dbVal = snapshot.val();
-        console.log("dbVal: " + JSON.stringify(dbVal));
-        console.log(dbVal.stockPrice);
-    });
-   // console.log(dbVal.change, dbVal.pctChange, dbVal.stockPrice);
+    database.ref(dbPath).on("value", (snapshot) => {
+      dbVal = snapshot.val();
+      console.log("dbVal: " + JSON.stringify(dbVal));
+      console.log("price: " + dbVal.stockPrice);
+      price = dbVal.stockPrice;
+      changeInPrice = dbVal.change;
+      pctCh = dbVal.pctChange;
 
-    // console.log("in renderWatchTable: " + cprice);
-    // console.log("converted price: " + numeral(cprice).format("$0,0.00"));
-    tCellSym.text(sym);
-    tCellPrice.html(numeral(cprice).format("$0,0.00"));
-    tRow.attr("stock-sym", sym).
-         attr("id", sym);
-    tRow.append(tCellSym, tCellPrice);
+      // console.log(dbVal.change, dbVal.pctChange, dbVal.stockPrice);
+
+      console.log("in renderWatchTable: " + price);
+      // console.log("converted price: " + numeral(cprice).format("$0,0.00"));
+      tCellSym.text(sym);
+      tCellPrice.html(numeral(price).format("$0,0.00"));
+      tCellChange.html(numeral(changeInPrice).format("+0,0.00"));
+      tCellPct.html(numeral(pctCh).format("0.00%"));
+      tRow.attr("stock-sym", sym).
+          attr("id", sym);
+      tRow.append(tCellSym, tCellPrice, tCellChange, tCellPct);
+    });
+
     $("#watch-table").append(tRow);
   }
 
@@ -95,11 +104,45 @@ $(document).ready(() => {
   function addToWatchDb(sym, price) {
     var dbPath = "watchlist/" + sym;
 
-    database.ref(dbPath).set({
-      "stockPrice": price,
-      "change": 0,
-      "pctChange": 0
+    currentWatchRow.currentPrice = price;
+
+    database.ref(dbPath).update({
+      "stockPrice": price
+      // "previousPrice": 0,
+      // "change": 0,
+      // "pctChange": 0
      // "dateAdded": firebase.database.ServerValue.TIMESTAMP
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // addRestInfoWatchDb adds symbol and price to the database, symbol is the parent
+  // and price is the child
+  //
+  function addRestInfoWatchDb(sym, previousPrice) {
+    var dbPath = "watchlist/" + sym,
+        // calculate change and percentage change
+        change,
+        pctChange;
+
+    console.log("in addRestInfoWatchDb()");
+
+    // get values currentprice
+    database.ref(dbPath).on("value", (snapshot) => {
+      change = snapshot.val().stockPrice - previousPrice;
+      console.log("change in addRestInfoWatchDB: " + change);
+    });
+    pctChange = change / previousPrice;
+    currentWatchRow.pctChange = pctChange;
+    currentWatchRow.previousPrice = previousPrice;
+    currentWatchRow.change = change;
+
+    console.log("current watch row: " + JSON.stringify(currentWatchRow));
+
+    database.ref(dbPath).update({
+      previousPrice,
+      change,
+      pctChange
     });
   }
 
@@ -139,7 +182,7 @@ $(document).ready(() => {
         queryURL;
 
     console.log("in buildBatchURL()");
-    queryURL = AlphaBatch + sym + AlphaBatchSuffix;
+    queryURL = AlphaBatch + sym + AlphaSuffix;
     console.log("batch url: " + queryURL);
 
     $.ajax({
@@ -158,7 +201,7 @@ $(document).ready(() => {
             renderStockInfo(result["Stock Quotes"][0]);
             break;
           case "watch":
-            console.log("coming from watchlist");
+            console.log("coming from watch case");
             console.log("Price: " + numeral(result["Stock Quotes"][0]["2. price"]).format("$0,0.00"));
             currentWatchRow.symbol = sym;
             currentWatchRow.currentPrice = result["Stock Quotes"][0]["2. price"];
@@ -176,29 +219,39 @@ $(document).ready(() => {
   }
 
   // ---------------------------------------------------------------------
-  // builds watchlist
+  // buildTimeSeriesURL() builds time series url
   //
-  // function buildWatchlist(sym) {
-  //  var result,
+  function buildTimeSeriesURL(sym) {
+    var result,
+        keys,
+        secondObject,
+        queryURL;
 
-  //      queryURL;
-
-  //  console.log("in buildWatchlist()");
+    console.log("in buildTimeSeriesURL()");
     // get time-last-refreshed
-  //  queryURL = AlphaTS + sym + AlphaTSSuffix;
-  //  console.log("batch url: " + queryURL);
+    queryURL = AlphaTS + sym + AlphaTSSuffix;
+    console.log("time series url: " + queryURL);
 
-  //  $.ajax({
-  //    "method": "GET",
-  //    "url": queryURL
-  //  }).then((response) => {
-  //    // console.log(response);
-  //    result = response;
-  //    console.log(result);
-  //    console.log(result["Stock Quotes"][0]);
-  //    renderStockInfo(result["Stock Quotes"][0]);
-  //  });
-  // }
+    $.ajax({
+      "method": "GET",
+      "url": queryURL
+    }).
+    done((response) => {
+      result = response["Time Series (Daily)"];
+      console.log("response[\"Time Series (Daily)\"]: " + JSON.stringify(result));
+      // store the keys of result in the variable keys
+      keys = Object.keys(result);
+      console.log("keys: " + keys);
+      secondObject = keys[0 + 1];
+      // get previous Day's object, which is always the second element
+      console.log("previous day price: " + result[secondObject]["4. close"]);
+      currentWatchRow.previousPrice = result[secondObject]["4. close"];
+      addRestInfoWatchDb(sym, result[secondObject]["4. close"]);
+    }).
+    fail(() => {
+      console.log("Failure from Alpha Time Series function");
+    });
+  }
 
 
   // -----------------------------------------------------------------------
@@ -244,11 +297,7 @@ $(document).ready(() => {
       buildBatchURL(stockSymbol, "watch");
 
       // get yesterday's close price of stock symbol
-
-
-      // calculate change
-
-      // calculate percentage change
+      buildTimeSeriesURL(stockSymbol);
 
       // add row to watchListTable
       renderWatchTable(stockSymbol);
