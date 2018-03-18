@@ -92,6 +92,8 @@ $(document).ready(() => {
       tRow.attr("stock-sym", sym).
           attr("id", sym);
       tRow.append(tCellSym, tCellPrice, tCellChange, tCellPct);
+    }, (errorObject) => {
+      console.log("Errors handled: " + errorObject.code);
     });
 
     $("#watch-table").append(tRow);
@@ -131,6 +133,8 @@ $(document).ready(() => {
     database.ref(dbPath).on("value", (snapshot) => {
       change = snapshot.val().stockPrice - previousPrice;
       console.log("change in addRestInfoWatchDB: " + change);
+    }, (errorObject) => {
+      console.log("Errors handled: " + errorObject.code);
     });
     pctChange = change / previousPrice;
     currentWatchRow.pctChange = pctChange;
@@ -143,6 +147,8 @@ $(document).ready(() => {
       previousPrice,
       change,
       pctChange
+    }, (errorObject) => {
+      console.log("Errors handled: " + errorObject.code);
     });
   }
 
