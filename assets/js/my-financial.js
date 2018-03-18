@@ -3,18 +3,21 @@
 // GLOBALS
 //
 // **************************************************************************
-// CONSTANTS
+//
+// ---- CONSTANTS ----
+const IEXSuffix = "/company";
+const IEXEndpoint = "https://api.iextrading.com/1.0/stock/";
 const AlphaAPIKEY = "51J2DL5ZC7RQBE6J";
-// const AlphaEndPoint = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=";
 const AlphaBatch = "https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&symbols=";
 const AlphaSuffix = "&apikey=" + AlphaAPIKEY;
 const AlphaTS = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=";
 const AlphaTSSuffix = AlphaSuffix;
 
 // https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&outputsize=full&apikey=demo
-// https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=EPD&apikey=51J2DL5ZC7RQBE6J
-// VARIABLES
-  // Initialize Firebase
+
+//
+// ---- VARIABLES ----
+// Initialize Firebase
   var config = {
     "apiKey": "AIzaSyBAFhIsrnS798a2VSRGcvbuzSb-woD6z6E",
     "authDomain": "stocks-info-36826.firebaseapp.com",
@@ -30,12 +33,17 @@ const AlphaTSSuffix = AlphaSuffix;
     "currentPrice": 0,
     "previousPrice": 0,
     "change": 0,
-    "pctChange": 0
+    "pctChange": 0,
+    "companyName": "",
+    "website": "",
+    "description": ""
   };
 
   firebase.initializeApp(config);
 
   database = firebase.database();
+
+  // **************************************************************************
 
 $(document).ready(() => {
   // -----------------------------------------------------------------------------------------
@@ -54,13 +62,14 @@ $(document).ready(() => {
 
     watchBtn.addClass("ml-2 btn btn-success btn-sm watch-button").
             attr("stock-id", stockSym).
-            html("Add to &#x2605;");
+            html("+ Watchlist");
+            // html("Add to &#x2605;");
 
     return watchBtn;
   }
 
   // --------------------------------------------------------------------------
-  // renderWatchTable adds the current price
+  // renderWatchTable adds the current stock symbol to the watchlist
   //
   function renderWatchTable(sym) {
     var tRow = $("<tr>"),
@@ -124,18 +133,17 @@ $(document).ready(() => {
   //
   function addRestInfoWatchDb(sym, previousPrice) {
     var dbPath = "watchlist/" + sym,
-        // calculate change and percentage change
         change,
         pctChange;
 
     console.log("in addRestInfoWatchDb()");
 
-    // get values currentprice
+    // get current stock price from database and calculate change in price
     database.ref(dbPath).on("value", (snapshot) => {
       change = snapshot.val().stockPrice - previousPrice;
       console.log("change in addRestInfoWatchDB: " + change);
     }, (errorObject) => {
-      console.log("Errors handled: " + errorObject.code);
+      console.log("Errors handled: " + JSON.stringify(errorObject));
     });
     pctChange = change / previousPrice;
     currentWatchRow.pctChange = pctChange;
@@ -171,7 +179,9 @@ $(document).ready(() => {
     cardh5.text(data["1. symbol"]).
            attr("stock-sym", data["1. symbol"]);
     htmlText = "Price: " + numeral(data["2. price"]).format("$0,0.00") + "<br />";
-    htmlText += "Volume: " + data["3. volume"];
+    htmlText += "Volume: " + data["3. volume"] + "<br />";
+    htmlText += "Company: <a href=" + currentWatchRow.website + " target=\"_blank\">" + currentWatchRow.companyName + "</a><br />";
+    htmlText += "About: " + currentWatchRow.description + "<br />";
 
     cardBody.html(htmlText).
             append(addToWatchBtn);
@@ -191,6 +201,8 @@ $(document).ready(() => {
     console.log("in buildBatchURL()");
     queryURL = AlphaBatch + sym + AlphaSuffix;
     console.log("batch url: " + queryURL);
+    // get stock symbol information
+    stockInfoURL(sym);
 
     $.ajax({
       "method": "GET",
@@ -222,6 +234,36 @@ $(document).ready(() => {
     }).
     fail(() => {
       console.log("Failure from alpha batch function");
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // stockInfoURL() gets stock information based on stock symbol
+  //
+  function stockInfoURL(sym) {
+    var queryURL;
+
+    queryURL = IEXEndpoint + sym + IEXSuffix;
+    console.log("in stockInfoURL -- queryURL: " + queryURL);
+
+    $.ajax({
+      "method": "GET",
+      "url": queryURL
+    }).
+    done((response) => {
+      console.log("stock info response: " + JSON.stringify(response));
+      currentWatchRow.companyName = response.companyName;
+      currentWatchRow.website = response.website;
+      currentWatchRow.description = response.description;
+      // console.log("response[\"Time Series (Daily)\"]: " + JSON.stringify(result));
+      // store the keys of result in the variable keys
+      // console.log("keys: " + keys);
+      // get previous Day's object, which is always the second element
+      // currentWatchRow.previousPrice = result[secondObject]["4. close"];
+      // addRestInfoWatchDb(sym, result[secondObject]["4. close"]);
+    }).
+    fail(() => {
+      console.log("Failure from Alpha Time Series function");
     });
   }
 
@@ -320,7 +362,7 @@ $(document).ready(() => {
   initdb();
   $("#watch-table-header").hide();
 
-  // displays the selected topic's giphy images
+  // adds the selected stock to watch list
   $(document).on("click", ".watch-button", addToWatchList);
 // End of document.ready()
 });
