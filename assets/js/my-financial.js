@@ -238,10 +238,10 @@ $(document).ready(() => {
     }).
     done((response) => {
       result = response["Time Series (Daily)"];
-      console.log("response[\"Time Series (Daily)\"]: " + JSON.stringify(result));
+      // console.log("response[\"Time Series (Daily)\"]: " + JSON.stringify(result));
       // store the keys of result in the variable keys
       keys = Object.keys(result);
-      console.log("keys: " + keys);
+      // console.log("keys: " + keys);
       secondObject = keys[0 + 1];
       // get previous Day's object, which is always the second element
       console.log("previous day price: " + result[secondObject]["4. close"]);
