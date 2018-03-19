@@ -50,7 +50,6 @@ $(document).ready(() => {
   // initialize database parent objects
   function initdb() {
     console.log("in initdb()");
-    //
   }
 
 
@@ -81,7 +80,7 @@ $(document).ready(() => {
         price, changeInPrice, pctCh,
         dbVal;
 
-    // ref
+    // read current stock price from database
     database.ref(dbPath).on("value", (snapshot) => {
       dbVal = snapshot.val();
       console.log("dbVal: " + JSON.stringify(dbVal));
@@ -89,8 +88,6 @@ $(document).ready(() => {
       price = dbVal.stockPrice;
       changeInPrice = dbVal.change;
       pctCh = dbVal.pctChange;
-
-      // console.log(dbVal.change, dbVal.pctChange, dbVal.stockPrice);
 
       console.log("in renderWatchTable: " + price);
       // console.log("converted price: " + numeral(cprice).format("$0,0.00"));
@@ -104,9 +101,10 @@ $(document).ready(() => {
     }, (errorObject) => {
       console.log("Errors handled: " + errorObject.code);
     });
-    // console.log("tHeader: " + JSON.stringify(tHeader));
+    // $("#my-watch-table").prepend.html("<caption>Watchlist</caption>");
+    $("#watchlist-caption").show();
     $("#watch-table-header").show();
-    $("#watch-table").append(tRow);
+    $("#watch-table").prepend(tRow);
   }
 
   // --------------------------------------------------------------------------
@@ -117,19 +115,11 @@ $(document).ready(() => {
     var dbPath = "watchlist/" + sym;
 
     currentWatchRow.currentPrice = price;
-
-    database.ref(dbPath).update({
-      "stockPrice": price
-      // "previousPrice": 0,
-      // "change": 0,
-      // "pctChange": 0
-     // "dateAdded": firebase.database.ServerValue.TIMESTAMP
-    });
+    database.ref(dbPath).update({"stockPrice": price});
   }
 
   // --------------------------------------------------------------------------
-  // addRestInfoWatchDb adds symbol and price to the database, symbol is the parent
-  // and price is the child
+  // addRestInfoWatchDb() adds price change, percentage change to the database
   //
   function addRestInfoWatchDb(sym, previousPrice) {
     var dbPath = "watchlist/" + sym,
@@ -198,9 +188,9 @@ $(document).ready(() => {
     var result,
         queryURL;
 
-    console.log("in buildBatchURL()");
     queryURL = AlphaBatch + sym + AlphaSuffix;
-    console.log("batch url: " + queryURL);
+    console.log("in buildBatchURL() batch url: " + queryURL);
+
     // get stock symbol information
     stockInfoURL(sym);
 
@@ -210,8 +200,6 @@ $(document).ready(() => {
     }).
     done((response) => {
       result = response;
-      console.log(result);
-      console.log(result["Stock Quotes"][0]);
       if (result["Stock Quotes"].length === 0) {
         console.log("Stock does not exist");
       } else {
@@ -220,13 +208,11 @@ $(document).ready(() => {
             renderStockInfo(result["Stock Quotes"][0]);
             break;
           case "watch":
-            console.log("coming from watch case");
-            console.log("Price: " + numeral(result["Stock Quotes"][0]["2. price"]).format("$0,0.00"));
+            console.log("buildBatch watch Price: " + numeral(result["Stock Quotes"][0]["2. price"]).format("$0,0.00"));
             currentWatchRow.symbol = sym;
             currentWatchRow.currentPrice = result["Stock Quotes"][0]["2. price"];
             addToWatchDb(sym, result["Stock Quotes"][0]["2. price"]);
             break;
-            // renderWatchTable(result["Stock Quotes"][0]);
           default:
             break;
         }
@@ -255,12 +241,6 @@ $(document).ready(() => {
       currentWatchRow.companyName = response.companyName;
       currentWatchRow.website = response.website;
       currentWatchRow.description = response.description;
-      // console.log("response[\"Time Series (Daily)\"]: " + JSON.stringify(result));
-      // store the keys of result in the variable keys
-      // console.log("keys: " + keys);
-      // get previous Day's object, which is always the second element
-      // currentWatchRow.previousPrice = result[secondObject]["4. close"];
-      // addRestInfoWatchDb(sym, result[secondObject]["4. close"]);
     }).
     fail(() => {
       console.log("Failure from Alpha Time Series function");
@@ -276,10 +256,9 @@ $(document).ready(() => {
         secondObject,
         queryURL;
 
-    console.log("in buildTimeSeriesURL()");
     // get time-last-refreshed
     queryURL = AlphaTS + sym + AlphaTSSuffix;
-    console.log("time series url: " + queryURL);
+    console.log("in buildTimeSeriesURL() url: " + queryURL);
 
     $.ajax({
       "method": "GET",
@@ -287,10 +266,8 @@ $(document).ready(() => {
     }).
     done((response) => {
       result = response["Time Series (Daily)"];
-      // console.log("response[\"Time Series (Daily)\"]: " + JSON.stringify(result));
       // store the keys of result in the variable keys
       keys = Object.keys(result);
-      // console.log("keys: " + keys);
       secondObject = keys[0 + 1];
       // get previous Day's object, which is always the second element
       console.log("previous day price: " + result[secondObject]["4. close"]);
@@ -322,23 +299,21 @@ $(document).ready(() => {
   });
 
   $("#wlist-button").on("click", (event) => {
-  // var stockSymbol = $("#wlist-input").val().
-  //                                     trim();
 
     console.log("in wlist-button() ");
     $("#financial-text").empty();
 
     event.preventDefault();
-    // buildWatchlist(stockSymbol);
 
   });
 
   // -----------------------------------------------------------------------
   // addToWatchList adds selected stock to watch list
   //
-  function addToWatchList() {
+  function addToWatchList(event) {
     var stockSymbol = $(this).attr("stock-id");
 
+    event.preventDefault();
     // empty out stock-ticker content
     $("#stock-ticker-content").empty();
 
@@ -353,16 +328,14 @@ $(document).ready(() => {
 
     // add row to watchListTable
     renderWatchTable(stockSymbol);
-
-    // event.preventDefault();
-    // buildWatchlist(stockSymbol);
-
   }
 
   initdb();
   $("#watch-table-header").hide();
+  $("#watchlist-caption").hide();
 
   // adds the selected stock to watch list
   $(document).on("click", ".watch-button", addToWatchList);
-// End of document.ready()
+
+  // End of document.ready()
 });
