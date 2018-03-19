@@ -297,6 +297,12 @@ $(document).ready(() => {
 
     // remove row so as to not repeat stock symbol on watchlist
     $("#wrow-" + stockSymbol).remove();
+
+    // check if watch table is empty
+    if ($("#watch-table").children().length === 0) {
+      $("#watch-table-header").hide();
+      $("#watchlist-caption").hide();
+    }
   }
 
   // -----------------------------------------------------------------------
