@@ -110,7 +110,6 @@ $(document).ready(() => {
     }, (errorObject) => {
       console.log("Errors handled: " + errorObject.code);
     });
-    // $("#my-watch-table").prepend.html("<caption>Watchlist</caption>");
     $("#watchlist-caption").show();
     $("#watch-table-header").show();
     $("#watch-table").prepend(tRow);
@@ -288,6 +287,17 @@ $(document).ready(() => {
     });
   }
 
+  // -----------------------------------------------------------------------
+  // removeFromWatchList() removes the selected stock from the watchlist
+  //
+  function removeFromWatchList() {
+    var stockSymbol = $(this).attr("data-name");
+
+    console.log("in removeFromWatchList, remove: " + stockSymbol);
+
+    // remove row so as to not repeat stock symbol on watchlist
+    $("#wrow-" + stockSymbol).remove();
+  }
 
   // -----------------------------------------------------------------------
   // implements "stock-ticker" function
@@ -345,6 +355,9 @@ $(document).ready(() => {
 
   // adds the selected stock to watch list
   $(document).on("click", ".watch-button", addToWatchList);
+
+  // remove the selected stock from watch list
+  $(document).on("click", ".remove-from-watchlist", removeFromWatchList);
 
   // End of document.ready()
 });
