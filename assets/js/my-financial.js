@@ -76,6 +76,8 @@ $(document).ready(() => {
         tCellPrice = $("<td>"),
         tCellChange = $("<td>"),
         tCellPct = $("<td>"),
+        tCellRmv = $("<td>"),
+        delBtn = $("<button>"),
         dbPath = "watchlist/" + sym,
         price, changeInPrice, pctCh,
         dbVal;
@@ -95,11 +97,16 @@ $(document).ready(() => {
       tCellPrice.html(numeral(price).format("$0,0.00"));
       tCellChange.html(numeral(changeInPrice).format("+0,0.00"));
       tCellPct.html(numeral(pctCh).format("0.00%"));
+      delBtn.attr("id", "btn-" + sym).
+            attr("data-name", sym).
+            addClass("custom-remove remove-from-watchlist").
+            text("x");
+      tCellRmv.append(delBtn);
       tRow.attr("id", "wrow-" + sym).
            attr("stock-sym", sym);
       // empty out row so as to not repeat stock symbol on watchlist
       $("#wrow-" + sym).empty();
-      tRow = $("#wrow-" + sym).append(tCellSym, tCellPrice, tCellChange, tCellPct);
+      tRow = $("#wrow-" + sym).append(tCellSym, tCellPrice, tCellChange, tCellPct, tCellRmv);
     }, (errorObject) => {
       console.log("Errors handled: " + errorObject.code);
     });

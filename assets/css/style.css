@@ -14,6 +14,13 @@ html body {
     width: 40% !important;
     padding: 0px 10px;
     margin: 8px 8px; }
+  html body .custom-remove {
+    margin: 0px 0px;
+    padding: 0px 5px;
+    background-color: lightpink;
+    height: 18px; }
+  html body .custom-remove:hover {
+    background-color: red; }
   html body .ticker-paragraph {
     line-height: normal; }
   html body #send-chat {
