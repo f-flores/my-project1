@@ -95,9 +95,11 @@ $(document).ready(() => {
       tCellPrice.html(numeral(price).format("$0,0.00"));
       tCellChange.html(numeral(changeInPrice).format("+0,0.00"));
       tCellPct.html(numeral(pctCh).format("0.00%"));
-      tRow.attr("stock-sym", sym).
-           attr("id", sym);
-      tRow.append(tCellSym, tCellPrice, tCellChange, tCellPct);
+      tRow.attr("id", "wrow-" + sym).
+           attr("stock-sym", sym);
+      // empty out row so as to not repeat stock symbol on watchlist
+      $("#wrow-" + sym).empty();
+      tRow = $("#wrow-" + sym).append(tCellSym, tCellPrice, tCellChange, tCellPct);
     }, (errorObject) => {
       console.log("Errors handled: " + errorObject.code);
     });
