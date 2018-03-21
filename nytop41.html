@@ -25,8 +25,8 @@
               <a class="flex-sm-fill text-sm-center nav-link nav-style text-dark" href="nysearch.html">News</a>
               <a class="flex-sm-fill text-sm-center nav-link nav-style text-dark" href="formpagev2.html">contact</a>
             <button id="btnSignup" type='button' class="btn btn-secondary btn-sm mr-2" data-toggle="modal" data-target="#pSignup">Signup</button>
-            <button id="btnLogin" type='button' class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#pLogin">Login</button>
-            <button id="btnLogout" type='button' class="btn btn-action btn-sm d-none" data-toggle="modal">Logout</button>
+            <button id="modalLogin" type='button' class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#pLogin">Login</button>
+            <button id="modalLogout" type='button' class="btn btn-action btn-sm d-none" data-toggle="modal">Logout</button>
           </nav>
         </div>
       </header>
@@ -178,7 +178,7 @@
                 <input id="appEmail" type="email" class="form-control" placeholder="mail@example.com"/>
                 <input id="appPassword" type="password" class="form-control" placeholder="Password" />
               <!-- login form button -->
-                <button class="btn btn-primary btn-block" type="submit">Log In</button>
+                <button id="btnLogin" class="btn btn-primary btn-block" type="submit">Log In</button>
               </div>
             </form>
           </div>
@@ -205,10 +205,10 @@
                   <input id="appFirstName" type="text" class="form-control" placeholder="First name"/>
                   <input id="appLastName" type="text" class="form-control" placeholder="Last name"/>
                   <input id="signupEmail" type="email" class="form-control" placeholder="Enter Email"/>
-                  <input id="signupPassword" type="password" type="password" class="form-control" placeholder="Enter Password" />
+                  <input id="signupPassword" type="password" class="form-control" placeholder="Enter Password" />
                   <input id="confirmPassword" type="password" class="form-control" placeholder="Confirm Password" />
                 <!-- login form button -->
-                  <button class="btn btn-primary btn-block" type="submit">Register</button>
+                  <button id="btnSignup" class="btn btn-primary btn-block" type="submit">Register</button>
                 </div>
               </form>
             </div>
