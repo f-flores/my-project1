@@ -36,7 +36,7 @@
             "error",
             "never"
         ],
-        "consistent-return": "off",
+        "consistent-return": "error",
         "consistent-this": "error",
         "curly": "error",
         "default-case": "error",
@@ -73,7 +73,7 @@
         "keyword-spacing": "error",
         "line-comment-position": "error",
         "linebreak-style": [
-            "error",
+            "off",
             "windows"
         ],
         "lines-around-comment": "error",
@@ -81,7 +81,7 @@
         "lines-between-class-members": "error",
         "max-depth": "error",
         "max-len": "off",
-        "max-lines": "off",
+        "max-lines": "warn",
         "max-nested-callbacks": "error",
         "max-params": "error",
         "max-statements": [

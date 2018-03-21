@@ -1,29 +1,47 @@
-/* stylesheet */
-* {
-  box-sizing: border-box; }
+/* style.css */
 
-html body {
-  background-color: lightcyan;
-  margin: 5px 30px;
-  height: 100%;
-  width: 99%;
-  /*     #topic-form {
-      display: inline-block;
-    } */ }
-  html body .custom-form-input input[type=text] {
-    width: 40% !important;
-    padding: 0px 10px;
-    margin: 8px 8px; }
-  html body .custom-remove {
-    margin: 0px 0px;
-    padding: 0px 5px;
-    background-color: lightpink;
-    height: 18px; }
-  html body .custom-remove:hover {
-    background-color: red; }
-  html body .ticker-paragraph {
-    line-height: normal; }
-  html body #send-chat {
-    width: 60%; }
-  html body #my-watch-table {
-    font-size: 60%; }
+/* .container {
+  margin-left: 40px;
+  margin-right: 40px;
+
+} */
+
+.nav-style {
+  background-color: white;
+}
+
+.nav-style:hover {
+  background-color: lightblue;
+}
+
+.custom-captcha {
+  width: 200px !important;
+  height: 200px !important;
+}
+
+.news-section {
+  background: lightgreen;
+}
+
+.ticker {
+  background: lightblue;
+
+}
+
+#nav-bar-wrapper{
+  margin-left: 40px;
+  margin-right: 10px;
+}
+h3 {
+  background-color: white;
+  font-style: ariel;
+  color: teal;
+  font: 18px;
+  padding: 10px;
+  margin-bottom: 0;
+}
+
+
+
+
+

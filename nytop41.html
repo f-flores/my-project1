@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>NY Times Top headlines</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="assets/css/reset.css"> -->
+  <link rel="stylesheet" href="assets/css/nytstyle.css">
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <div class="container">
+      <header class="row alert alert-dark">
+        <div class="col-12 col-sm-6 col-md-4">
+          <h1 class="lead py-3 text-dark">Rutgers Financial Application</h1>
+        </div>
+        <div class="col-12 col-sm-6 col-md-8">
+          <nav class="nav nav-pills flex-column flex-sm-row py-3 float-right">
+              <a class="flex-sm-fill text-sm-center nav-link nav-style text-dark active btn-outline-warning" href="nytop.html">Home</a>
+              <a class="flex-sm-fill text-sm-center nav-link nav-style text-dark" href="nysearch.html">News</a>
+              <a class="flex-sm-fill text-sm-center nav-link nav-style text-dark" href="formpagev2.html">contact</a>
+            <button id="btnSignup" type='button' class="btn btn-secondary btn-sm mr-2" data-toggle="modal" data-target="#pSignup">Signup</button>
+            <button id="btnLogin" type='button' class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#pLogin">Login</button>
+            <button id="btnLogout" type='button' class="btn btn-action btn-sm d-none" data-toggle="modal">Logout</button>
+          </nav>
+        </div>
+      </header>
+
+
+      <div class="container">
+          <div class="container">
+            <h2 id="line">Top Headlines</h2>
+            <br>
+            <div class="row">
+              <section class="col-sm-9">
+                <div class="card-deck">
+                  <div class="card">
+                    <img class="card-img-top" class="pic" src="assets/images/bus.jpg" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="card-title" id="headline"></h5>
+                      <p class="card-text" id="abstract"></p>
+                      <a href="" id="url"></a>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted" id="byline"></small>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <img class="card-img-top" src="assets/images/bus2.jpg" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="card-title" id="headline1"></h5>
+                      <p class="card-text" id="abstract1"></p>
+                      <a href="" id="url1"></a>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted" id="byline1"></small>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <img class="card-img-top" src="assets/images/bus3.jpg" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="card-title" id="headline2"></h5>
+                      <p class="card-text" id="abstract2"></p>
+                      <a href="" id="url2"></a>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted" id="byline2"></small>
+                    </div>
+                  </div>
+                </div>
+                <br>
+              </section>
+              <!-- stock info -->
+              <section class="col-sm-3">
+                <!--  Insert content here  -->
+                <div class="row">
+                  <div class="col-sm-11 mr-1">
+  
+                    <div id="stock-ticker-content" class="card border border-warning"></div>
+  
+                    <div class="row col-sm-11 mr-1">
+                      <br>
+                      <form id="topic-form" class="form-inline custom-form-input">
+                        <br>
+                        <label for="stock-input"></label>
+                        <input id="stock-input" class="form-control" type="text" placeholder="Stocks..." aria-label="stock-input">
+                        <button id="stock-ticker" class="btn btn-outline-warning btn-sm my-2" type="submit">Stock Symbol</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <section id="watchers-table" class="col-sm-3 text-warning">
+                  <div class="row">
+                    <table id="my-watch-table" class="table table-sm col-sm-11 mr-1">
+                      <thead id="watch-table-header">
+                        <tcaption id="watchlist-caption">
+                          <h6>Watchlist</h6>
+                        </tcaption>
+                        <tr>
+                          <th scope="col">Symbol</th>
+                          <th scope="col">Last Price</th>
+                          <th scope="col">Change</th>
+                          <th scope="col">% Change</th>
+                          <th scope="col">Remove</th>
+                        </tr>
+                      </thead>
+                      <tbody id="watch-table"></tbody>
+                    </table>
+  
+                </section>
+  
+  
+                </div>
+  
+  
+  
+  
+                <!-- Row 2 -->
+                <div class="row">
+                  <section class="col-sm-9">
+                    <div class="card-deck">
+                      <div class="card">
+                        <img class="card-img-top" src="assets/images/bus4.jpg" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title" id="headline3"></h5>
+                          <p class="card-text" id="abstract3"></p>
+                          <a href="" id="url3"></a>
+                        </div>
+                        <div class="card-footer">
+                          <small class="text-muted" id="byline3"></small>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <img class="card-img-top" src="assets/images/bus5.jpg" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title" id="headline4"></h5>
+                          <p class="card-text" id="abstract4"></p>
+                          <a href="" id="url4"></a>
+                        </div>
+                        <div class="card-footer">
+                          <small class="text-muted" id="byline4"></small>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <img class="card-img-top" src="assets/images/bus6.jpg" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title" id="headline5"></h5>
+                          <p class="card-text" id="abstract5"></p>
+                          <a href="" id="url5"></a>
+                        </div>
+                        <div class="card-footer">
+                          <small class="text-muted" id="byline5"></small>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                  </section>
+                </div>
+  
+    <!-- LOGIN MODAL  -->
+    <div class="modal fade" id="pLogin">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Login to Rutgers financial app</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button><br />
+          </div>
+          <!-- body -->
+          <div class="modal-header">
+            <form role="form">
+              <div class="form-group">
+                <input id="appEmail" type="email" class="form-control" placeholder="mail@example.com"/>
+                <input id="appPassword" type="password" class="form-control" placeholder="Password" />
+              <!-- login form button -->
+                <button class="btn btn-primary btn-block" type="submit">Log In</button>
+              </div>
+            </form>
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+    <!-- *END LOGIN MODAL*  -->
+
+    <!-- BEGINNING OF SIGNUP MODAL  -->
+    <div class="modal fade" id="pSignup">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <!-- header -->
+            <div class="modal-header">
+              <h4 class="modal-title">signup for Rutgers financial app</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button><br />
+            </div>
+            <!-- body -->
+            <div class="modal-header">
+              <form role="form">
+                <div class="form-group">
+                  <input id="appFirstName" type="text" class="form-control" placeholder="First name"/>
+                  <input id="appLastName" type="text" class="form-control" placeholder="Last name"/>
+                  <input id="signupEmail" type="email" class="form-control" placeholder="Enter Email"/>
+                  <input id="signupPassword" type="password" type="password" class="form-control" placeholder="Enter Password" />
+                  <input id="confirmPassword" type="password" class="form-control" placeholder="Confirm Password" />
+                <!-- login form button -->
+                  <button class="btn btn-primary btn-block" type="submit">Register</button>
+                </div>
+              </form>
+            </div>
+  
+            
+          </div>
+        </div>
+      </div>
+      <!-- *END OF SIGNUP MODAL*  -->
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+  <!-- Firebase Reference -->
+  <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
+  <!-- jquery links-->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <!-- js libraries for modals -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="assets/js/nystop41.js"></script>
+
+
+</body>
+
+</html>

@@ -1,82 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>My Financial</title>
-    <!-- boostrap 4 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+    <title>Rutgers-finacial-application</title>
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-  <header>
-    <h1>Our Financial Header</h1>
-  </header>
+  <div class="container-fluid">
 
-  <h2>Stock Information</h2>
+    <div class="container">
+      <header class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <h2 class="lead py-3">Rutgers Financial Application</h2>
+        </div>
+        <div class="col-12 col-sm-6 col-md-8">
+          <nav class="nav nav-pills flex-column flex-sm-row py-3 float-right">
+            <a class="flex-sm-fill text-sm-center nav-link nav-style" href="index.html">News</a>
+            <a class="flex-sm-fill text-sm-center nav-link nav-style" href="nysearch.html">Market</a>
+            <a class="flex-sm-fill text-sm-center nav-link nav-style" href="formpage.html">contact</a>
+          </nav>
+        </div>
+      </header>
 
-  <div class="row">
-    <section class="offset-sm-9 col-sm-3">
-<!--  Insert content here  -->
+
+    <div class="container">
+<!--       First row -->
       <div class="row">
-        <div class="col-sm-11 mr-1">
-          <div id="stock-ticker-content" class="card"></div>
-
-          <div class="row">
-            <form id="topic-form" class="form-inline custom-form-input">
-              <label for="stock-input"></label>
-              <input id="stock-input" class="form-control" type="text" placeholder="Stocks..." aria-label="stock-input">
-              <button id="stock-ticker" class="btn btn-outline-warning btn-sm my-2" type="submit">Stock Symbol</button>
-            </form>
-          </div>
+        <div class="col-md-9 news-section">
+          News section
+        </div>
+        <div class="col-md-3 ticker">
+          Ticker section
         </div>
       </div>
-    </section>
-  </div>
 
-  <div class="row">
-    <section id="watchers-table" class="offset-sm-9 col-sm-3" >
+<!--       Second row -->
       <div class="row">
-        <table id="my-watch-table" class="table table-sm col-sm-11 mr-1">
-          <thead id="watch-table-header">
-            <tcaption id="watchlist-caption"><h6>Watchlist</h6></tcaption>
-            <tr>
-              <th scope="col">Symbol</th>
-              <th scope="col">Last Price</th>
-              <th scope="col">Change</th>
-              <th scope="col">% Change</th>
-              <th scope="col">Remove</th>
-            </tr>
-          </thead>
-          <tbody id="watch-table"></tbody>
-        </table>
-<!--         <form id="wlist-form" class="form-inline custom-form-input">
-          <label for="wlist-input"></label>
-          <input id="wlist-input" class="form-control mr-sm-2" type="text" placeholder="Watch..." aria-label="wlist-input">
-          <button id="wlist-button" class="btn btn-sm btn-outline-warning my-2 my-sm-0 mr-2" type="submit">Add to Watch List</button>
-        </form> -->
-      </div>
-    </section>
-  </div>
-
-    <!-- jQuery -->
+          <div class="col-md-9 news-section">
+            News section
+          </div>
+          <div class="col-md-3 ticker">
+            Ticker section
+          </div>
+        </div>
+    </div>
+  
+    <!-- jQuery library -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <!-- more ajax and boostrap js libraries -->
+    <!-- more ajax and boostrap js libraries for modals-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <!-- Numeral mins Reference -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <!-- Firebase Reference -->
     <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
-    <!-- Local Scripts -->
-    <script type="text/javascript" src="./assets/js/globals.js"></script>
-    <script type="text/javascript" src="./assets/js/my-financial.js"></script>
-</body>
+  </body>
 </html>
-
-
-
-
-
-
